@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "preset": "club",
+  "app": { "name": "club-sample", "title": "우리 동아리", "short": "동아리", "color": "#0B5D56", "tz": "Asia/Seoul" },
+  "scale": { "members": 30, "note": "앱스크립트는 수십 명까지 넉넉함. 수백 명이 동시에 쓰면 다른 저장소를 검토" },
+  "privacy": { "collectPhone": false, "keepMonths": 12, "photosPublic": false },
+  "auth": { "mode": "shared_password", "sheet": "members", "name": "이름", "role": "역할", "status": "상태", "inactive": "쉬는 중" },
+  "roles": ["대표", "총무", "기록", "사진", "정보", "회원"],
+  "leads": ["대표"],
+  "sheets": [
+    { "key": "members", "name": "회원", "title": "이름", "write": ["대표"],
+      "columns": [
+        { "h": "이름", "type": "text", "req": true },
+        { "h": "역할", "type": "text", "hint": "여러 개면 쉼표로: 총무, 사진" },
+        { "h": "상태", "type": "select", "options": ["활동", "쉬는 중"] } ] },
+    { "key": "events", "name": "일정", "title": "주제", "date": "날짜", "write": ["대표", "정보"],
+      "columns": [
+        { "h": "날짜", "type": "date", "req": true },
+        { "h": "시작", "type": "time" },
+        { "h": "끝", "type": "time" },
+        { "h": "장소", "type": "text" },
+        { "h": "주제", "type": "text", "req": true } ] },
+    { "key": "attend", "name": "출석", "date": "날짜", "write": "own", "hidden": true,
+      "columns": [
+        { "h": "날짜", "type": "date", "req": true },
+        { "h": "이름", "type": "user" },
+        { "h": "응답", "type": "select", "options": ["참석", "불참"], "req": true },
+        { "h": "게스트", "type": "number", "hint": "데려오는 사람 수 (최대 2)" } ] },
+    { "key": "money", "name": "돈", "title": "항목", "date": "날짜", "write": ["대표", "총무"], "read": ["대표", "총무"], "sum": "금액",
+      "columns": [
+        { "h": "날짜", "type": "date", "req": true },
+        { "h": "항목", "type": "text", "req": true },
+        { "h": "금액", "type": "money", "req": true },
+        { "h": "메모", "type": "longtext" },
+        { "h": "올린사람", "type": "user" } ] },
+    { "key": "board", "name": "게시판", "title": "제목", "write": "own",
+      "columns": [
+        { "h": "시간", "type": "datetime", "auto": true },
+        { "h": "작성자", "type": "user" },
+        { "h": "제목", "type": "text", "req": true },
+        { "h": "내용", "type": "longtext" } ] },
+    { "key": "log", "name": "기록", "system": true,
+      "columns": [ { "h": "시간", "type": "text" }, { "h": "이름", "type": "text" }, { "h": "일", "type": "text" }, { "h": "내용", "type": "text" } ] }
+  ],
+  "folders": [
+    { "key": "upload", "name": "00_업로드" },
+    { "key": "photo", "name": "01_사진", "byDate": true, "image": true, "label": "모임 사진", "write": "all" },
+    { "key": "receipt", "name": "02_영수증", "byDate": true, "image": true, "label": "영수증", "write": ["대표", "총무"] },
+    { "key": "audio", "name": "03_녹음", "byDate": true, "label": "녹음", "write": ["대표", "기록"], "accept": "audio/*,.m4a,.mp3,.wav" },
+    { "key": "doc", "name": "04_문서", "label": "문서", "write": ["대표"] },
+    { "key": "archive", "name": "99_보관" }
+  ],
+  "home": {
+    "nextEvent": "events",
+    "rsvp": { "sheet": "attend", "answer": "응답", "options": ["참석", "불참"], "guests": "게스트" },
+    "photos": "photo",
+    "uploads": ["photo", "receipt", "audio"]
+  },
+  "tabs": [
+    { "key": "home", "label": "오늘", "icon": "home", "view": "home" },
+    { "key": "events", "label": "모임", "icon": "cal", "view": "table", "sheet": "events" },
+    { "key": "board", "label": "게시판", "icon": "chat", "view": "table", "sheet": "board" },
+    { "key": "album", "label": "기록", "icon": "photo", "view": "gallery", "folder": "photo" },
+    { "key": "money", "label": "현황", "icon": "chart", "view": "table", "sheet": "money", "roles": ["대표", "총무"] }
+  ],
+  "sample": {
+    "members": [
+      { "이름": "가대표", "역할": "대표", "상태": "활동" },
+      { "이름": "나총무", "역할": "총무", "상태": "활동" },
+      { "이름": "다기록", "역할": "기록", "상태": "활동" },
+      { "이름": "라사진", "역할": "사진", "상태": "활동" },
+      { "이름": "마회원", "역할": "회원", "상태": "활동" }
+    ],
+    "events": [
+      { "날짜": "+3", "시작": "19:00", "끝": "21:00", "장소": "센터 1층", "주제": "AI 도구로 발표 자료 만들기" },
+      { "날짜": "-4", "시작": "19:00", "끝": "21:00", "장소": "센터 1층", "주제": "첫 모임 · 목표 정하기" }
+    ],
+    "attend": [ { "날짜": "+3", "이름": "나총무", "응답": "참석", "게스트": 0 } ],
+    "money": [ { "날짜": "-4", "항목": "간식", "금액": 21000, "메모": "", "올린사람": "나총무" } ],
+    "board": [ { "시간": "-1", "작성자": "가대표", "제목": "다음 모임 준비물", "내용": "노트북을 가져와 주세요" } ],
+    "files": { "photo": 5, "receipt": 1 }
+  }
+}

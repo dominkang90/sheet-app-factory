@@ -1,0 +1,11 @@
+node_modules/
+mock/
+shots/
+web/.vercel/
+gas/.last_pushed/
+.last_pushed/
+gas_remote_check/
+tools/_chk.js
+.env*
+*.local.json
+__pycache__/

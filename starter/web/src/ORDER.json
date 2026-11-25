@@ -1,0 +1,16 @@
+[
+ "web/src/head.html",
+ "web/src/css/base.css",
+ "web/src/body.html",
+ "web/src/js/00_core.js",
+ "web/src/js/01_auth.js",
+ "web/src/js/02_nav.js",
+ "web/src/js/03_table.js",
+ "web/src/js/04_files.js",
+ "web/src/js/05_gallery.js",
+ "web/src/js/06_home.js",
+ "web/src/js/07_care.js",
+ "web/src/js/90_app.js",
+ "web/src/js/99_start.js",
+ "web/src/tail.html"
+]

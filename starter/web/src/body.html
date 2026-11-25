@@ -1,0 +1,33 @@
+</style></head>
+<body>
+<div id="login" class="login" style="display:none">
+  <div class="lbox">
+    <h1 id="l_title"></h1>
+    <p class="muted">모임에서 받은 비밀번호를 넣어 주세요</p>
+    <label class="fld"><span>비밀번호</span><input id="l_pw" type="password" autocomplete="current-password"></label>
+    <button class="btn" id="l_go" type="button">다음</button>
+    <div id="l_who" style="display:none">
+      <label class="fld"><span>내 이름</span><select id="l_user"></select></label>
+      <button class="btn" id="l_in" type="button">들어가기</button>
+    </div>
+    <p id="l_err" class="err" role="alert"></p>
+  </div>
+</div>
+<header class="top" id="top" style="display:none">
+  <b id="appTitle"></b>
+  <button type="button" id="meBtn" class="mebtn" aria-haspopup="menu" aria-expanded="false">내 정보</button>
+  <div id="meMenu" class="memenu" role="menu" hidden></div>
+</header>
+<main id="main"></main>
+<nav id="tabbar" class="tabbar" style="display:none" aria-label="화면 바꾸기"></nav>
+<div id="modal" class="ovl" style="display:none" role="dialog" aria-modal="true" aria-labelledby="md_t">
+  <div class="mbox"><h2 id="md_t"></h2><div id="md_b"></div><div id="md_btns" class="mbtns"></div></div>
+</div>
+<div id="lb" class="lb" style="display:none" role="dialog" aria-modal="true" aria-label="사진 크게 보기">
+  <div class="lbtop"><span id="lb_n"></span><button type="button" id="lb_x" class="lbx">닫기</button></div>
+  <div class="lbstage" id="lb_stage"><img id="lb_img" alt=""></div>
+  <div class="lbnav"><button type="button" id="lb_prev" aria-label="이전 사진">‹</button><button type="button" id="lb_next" aria-label="다음 사진">›</button></div>
+</div>
+<div id="net" class="net" aria-live="polite" hidden>불러오는 중…</div>
+<div id="toast" class="toast" role="status"></div>
+<script>

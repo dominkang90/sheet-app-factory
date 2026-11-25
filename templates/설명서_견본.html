@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A.I.고 동아리 앱은 이렇게 움직여요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#F6F4EE;color:#1E2624}
+:root{--teal:#0B5D56;--teal2:#E3EFEC;--ink:#1E2624;--sub:#55605D;--mute:#87918E;--line:rgba(30,38,36,.10);--card:#FFFFFF;--sun:#F2B544;--coral:#E07A5F;--sky:#5B8DB8;--leaf:#6A9A4F;--plum:#8A6BB0}
+*{box-sizing:border-box}
+body{font-family:"Noto Sans KR",system-ui,sans-serif;font-size:17px;line-height:1.7;word-break:keep-all;overflow-wrap:anywhere}
+h1,h2,h3,.disp{font-family:"Jua","Noto Sans KR",sans-serif;font-weight:400;letter-spacing:0}
+a{color:var(--teal)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header.hero{padding:56px 0 40px}
+.kicker{display:inline-block;font-size:14px;color:var(--teal);background:var(--teal2);padding:4px 12px;border-radius:999px;margin-bottom:16px}
+.hero h1{font-size:clamp(34px,6vw,56px);line-height:1.2;margin:0 0 16px}
+.hero p.lead{font-size:clamp(17px,2.2vw,20px);color:var(--sub);max-width:640px;margin:0}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.toc a{text-decoration:none;font-size:15px;color:var(--ink);background:var(--card);border:1px solid var(--line);padding:8px 14px;border-radius:10px}
+.toc a:hover,.toc a:focus-visible{border-color:var(--teal);outline:none}
+section{padding:40px 0;border-top:1px solid var(--line)}
+section h2{font-size:clamp(26px,4vw,36px);margin:0 0 8px;line-height:1.3}
+section .say{color:var(--sub);margin:0 0 24px;max-width:700px}
+.num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;font-family:"Jua";font-size:18px;margin-right:10px;vertical-align:4px}
+.grid{display:grid;gap:14px}
+.g5{grid-template-columns:repeat(5,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.card h3{font-size:22px;margin:10px 0 4px;line-height:1.3}
+.card .real{font-size:13px;color:var(--mute);font-family:ui-monospace,Consolas,monospace}
+.card p{margin:8px 0 0;font-size:15.5px;color:var(--sub)}
+.ico{width:56px;height:56px;border-radius:14px;display:grid;place-items:center}
+.ico svg{width:30px;height:30px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.c-phone{background:var(--teal)}.c-shop{background:var(--sky)}.c-cook{background:var(--coral)}.c-note{background:var(--leaf)}.c-box{background:var(--sun)}
+.flowline{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin:26px 0 0;font-size:15px;color:var(--sub)}
+.flowline b{color:var(--ink);font-weight:500}
+.arrow{color:var(--mute)}
+.sim{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tabs button{font:inherit;font-size:16px;padding:10px 16px;border-radius:12px;border:1px solid var(--line);background:#F6F4EE;color:var(--ink);cursor:pointer;min-height:44px}
+.tabs button[aria-pressed="true"]{background:var(--teal);color:#fff;border-color:var(--teal)}
+.tabs button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.track{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:10px 0 4px}
+.node{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;opacity:.38;transition:opacity .3s,transform .3s}
+.node.on{opacity:1;transform:translateY(-4px)}
+.node.done{opacity:.75}
+.node .ico{width:64px;height:64px;border-radius:18px}
+.node span{font-size:14.5px;line-height:1.35}
+.node small{display:block;font-size:12px;color:var(--mute)}
+.dot{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 5px rgba(30,38,36,.12);left:0;top:0;transition:left .55s cubic-bezier(.3,.7,.2,1),top .55s cubic-bezier(.3,.7,.2,1);pointer-events:none;z-index:2}
+.steps{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:8px;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:12px;background:#F6F4EE;color:var(--mute);transition:background .3s,color .3s}
+.steps li::before{content:counter(s);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#fff;border:1px solid var(--line);font-size:14px;color:var(--mute)}
+.steps li.on{background:var(--teal2);color:var(--ink)}
+.steps li.on::before{background:var(--teal);color:#fff;border-color:var(--teal)}
+.steps li.done{color:var(--sub)}
+.simbar{display:flex;gap:10px;margin-top:16px;align-items:center;flex-wrap:wrap}
+.btn{font:inherit;font-size:16px;padding:10px 18px;border-radius:12px;border:0;background:var(--ink);color:#fff;cursor:pointer;min-height:44px}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.tip{font-size:14px;color:var(--mute)}
+.phone{width:100%;max-width:300px;margin:0 auto;background:#1E2624;border-radius:34px;padding:12px}
+.screen{background:#FBFAF7;border-radius:24px;overflow:hidden;min-height:470px;display:flex;flex-direction:column}
+.scr-top{padding:14px 16px 6px;font-family:"Jua";font-size:19px;display:flex;justify-content:space-between;align-items:center}
+.scr-top small{font-family:"Noto Sans KR";font-size:11px;color:var(--mute);border:1px solid var(--line);padding:2px 8px;border-radius:8px}
+.scr-body{flex:1;padding:4px 14px;display:grid;gap:8px;align-content:start}
+.blk{border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.45;background:#fff;border:1px solid var(--line);cursor:pointer;text-align:left;font-family:inherit;color:inherit;width:100%}
+.blk b{display:block;font-size:13.5px;font-weight:500}
+.blk span{color:var(--mute);font-size:12px}
+.blk.big{background:var(--teal);color:#fff;border:0}
+.blk.big span{color:#cfe5e1}
+.blk[aria-pressed="true"]{outline:3px solid var(--sun);outline-offset:1px}
+.blk:focus-visible{outline:3px solid var(--sun)}
+.scr-nav{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);padding:8px 4px 10px;font-size:11px;text-align:center;color:var(--mute)}
+.scr-nav button{font:inherit;background:none;border:0;color:inherit;padding:6px 0;border-radius:10px;cursor:pointer;min-height:40px}
+.scr-nav button[aria-pressed="true"]{background:#ECEAE3;color:var(--ink);font-weight:500}
+.appwrap{display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:start}
+.explain{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;min-height:200px}
+.explain h3{font-size:24px;margin:0 0 6px}
+.explain p{margin:0 0 10px;color:var(--sub)}
+.explain .who{display:inline-block;font-size:13px;background:var(--teal2);color:var(--teal);padding:2px 10px;border-radius:8px}
+.roles{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px}
+.role{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;font-size:14.5px}
+.role b{font-family:"Jua";font-weight:400;font-size:18px;display:block}
+.role span{color:var(--sub)}
+.secret .card h3{font-size:21px}
+.big-n{font-family:"Jua";font-size:40px;color:var(--teal);line-height:1}
+.build{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.build li{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;position:relative}
+.build li .st{font-family:"Jua";font-size:14px;color:var(--teal)}
+.build li h3{font-size:20px;margin:4px 0 6px;line-height:1.3}
+.build li p{margin:0;font-size:14.5px;color:var(--sub)}
+.build li .real{display:block;margin-top:10px;font-size:12px;color:var(--mute);font-family:ui-monospace,Consolas,monospace}
+table.tools{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;font-size:15.5px;margin-top:20px}
+.tools th,.tools td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.tools th{background:#EFEDE6;font-weight:500;font-size:14px;color:var(--sub)}
+.tools tr:last-child td{border-bottom:0}
+.tools td:first-child{font-weight:500;white-space:nowrap}
+.tools .nick{font-family:"Jua";color:var(--teal);font-size:17px;white-space:nowrap}
+.time{position:relative;margin:0;padding:0 0 0 26px;list-style:none}
+.time::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.time li{position:relative;padding:0 0 18px}
+.time li::before{content:"";position:absolute;left:-23px;top:7px;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--teal)}
+.time b{font-family:"Jua";font-weight:400;font-size:19px;margin-right:8px}
+.time span{color:var(--sub)}
+.promise .card{border-left:5px solid var(--teal)}
+footer{padding:36px 0 60px;color:var(--mute);font-size:14px;border-top:1px solid var(--line)}
+@media (max-width:860px){
+ .g5{grid-template-columns:repeat(2,1fr)}
+ .g3,.g2{grid-template-columns:1fr}
+ .appwrap{grid-template-columns:1fr}
+ .roles{grid-template-columns:repeat(2,1fr)}
+ .build{grid-template-columns:1fr}
+ .track{grid-template-columns:1fr;gap:14px}
+ .node{flex-direction:row;text-align:left}
+ .node .ico{width:52px;height:52px;flex:none}
+ .node.on{transform:translateX(6px)}
+ .tools td:first-child,.tools .nick{white-space:normal}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></symbol>
+ <symbol id="i-shop" viewBox="0 0 24 24"><path d="M3.5 9.5 5 4h14l1.5 5.5"/><path d="M3.5 9.5h17v1a3 3 0 0 1-5.7 1.3A3 3 0 0 1 12 13a3 3 0 0 1-2.8-1.2A3 3 0 0 1 3.5 10.5z"/><path d="M5 13v7h14v-7"/><path d="M10 20v-4h4v4"/></symbol>
+ <symbol id="i-cook" viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V4.5"/><circle cx="12" cy="3.5" r="1"/><circle cx="9.3" cy="13" r="1.2"/><circle cx="14.7" cy="13" r="1.2"/><path d="M10 16.3h4"/><path d="M3 12v3M21 12v3"/></symbol>
+ <symbol id="i-note" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 3v18"/></symbol>
+ <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7.5 5 4h14l2 3.5"/><rect x="3" y="7.5" width="18" height="12.5" rx="2"/><path d="M9.5 12h5"/></symbol>
+</svg>
+
+<header class="hero wrap">
+ <span class="kicker">A.I.고 동아리 대시보드 설명서</span>
+ <h1>우리 동아리 앱은<br>이렇게 움직여요</h1>
+ <p class="lead">폰으로 모임에 간다고 누르고, 사진과 영수증을 올리고, 지원금이 얼마 남았는지 보는 앱이에요. 이 앱이 어떻게 생겼고, 안에서 무슨 일이 일어나고, 어떤 도구로 만들었는지 하나씩 보여 줄게요.</p>
+ <nav class="toc" aria-label="차례">
+  <a href="#shop">1. 가게로 생각해 봐요</a>
+  <a href="#sim">2. 버튼을 누르면</a>
+  <a href="#app">3. 앱 안에 있는 것</a>
+  <a href="#fast">4. 사진이 빠른 비법</a>
+  <a href="#make">5. 만든 방법과 도구</a>
+  <a href="#promise">6. 꼭 지키는 약속</a>
+ </nav>
+</header>
+
+<section id="shop">
+ <div class="wrap">
+  <h2><span class="num">1</span>앱은 작은 가게와 같아요</h2>
+  <p class="say">앱 하나는 사실 다섯 친구가 함께 일하는 거예요. 손님이 진열창에서 주문하면, 요리사가 공책을 보고, 서랍에서 물건을 꺼내 줘요.</p>
+  <div class="grid g5">
+   <div class="card"><div class="ico c-phone"><svg><use href="#i-phone"/></svg></div><h3>손님</h3><div class="real">회원의 휴대폰</div><p>동아리 회원이 폰으로 앱을 열어요. 버튼을 누르는 곳이에요.</p></div>
+   <div class="card"><div class="ico c-shop"><svg><use href="#i-shop"/></svg></div><h3>진열창</h3><div class="real">Vercel</div><p>앱 화면을 보여 주는 가게 앞 유리창이에요. 주소는 aigo-club.vercel.app이에요.</p></div>
+   <div class="card"><div class="ico c-cook"><svg><use href="#i-cook"/></svg></div><h3>요리사 로봇</h3><div class="real">Google Apps Script</div><p>주문을 받아서 진짜 일을 해요. 이름을 확인하고, 적고, 계산해요.</p></div>
+   <div class="card"><div class="ico c-note"><svg><use href="#i-note"/></svg></div><h3>큰 공책</h3><div class="real">Google 시트</div><p>누가 왔는지, 돈을 얼마 썼는지 칸칸이 적어 두는 표예요.</p></div>
+   <div class="card"><div class="ico c-box"><svg><use href="#i-box"/></svg></div><h3>사진 서랍</h3><div class="real">Google 드라이브</div><p>모임 사진, 영수증 사진, 녹음 파일을 넣어 두는 곳이에요.</p></div>
+  </div>
+  <p class="flowline"><b>손님</b><span class="arrow">→</span><b>진열창</b><span class="arrow">→</span><b>요리사 로봇</b><span class="arrow">→</span><b>공책·서랍</b><span class="arrow">→</span>다시 <b>손님</b>에게 결과</p>
+ </div>
+</section>
+
+<section id="sim">
+ <div class="wrap">
+  <h2><span class="num">2</span>버튼을 누르면 무슨 일이 생길까?</h2>
+  <p class="say">아래에서 하나를 고르고 <b>시작</b>을 눌러 보세요. 까만 공이 친구들 사이를 오가며 심부름하는 모습이 보여요.</p>
+  <div class="sim">
+   <div class="tabs" role="group" aria-label="해 볼 일 고르기">
+    <button type="button" data-s="attend" aria-pressed="true">모임에 간다고 누르기</button>
+    <button type="button" data-s="receipt" aria-pressed="false">영수증 사진 올리기</button>
+    <button type="button" data-s="swipe" aria-pressed="false">모임 사진 넘겨 보기</button>
+   </div>
+   <div class="track" id="track">
+    <div class="node" data-n="phone"><div class="ico c-phone"><svg><use href="#i-phone"/></svg></div><span>손님<small>회원 폰</small></span></div>
+    <div class="node" data-n="shop"><div class="ico c-shop"><svg><use href="#i-shop"/></svg></div><span>진열창<small>Vercel</small></span></div>
+    <div class="node" data-n="cook"><div class="ico c-cook"><svg><use href="#i-cook"/></svg></div><span>요리사 로봇<small>Apps Script</small></span></div>
+    <div class="node" data-n="note"><div class="ico c-note"><svg><use href="#i-note"/></svg></div><span>큰 공책<small>Google 시트</small></span></div>
+    <div class="node" data-n="box"><div class="ico c-box"><svg><use href="#i-box"/></svg></div><span>사진 서랍<small>Google 드라이브</small></span></div>
+    <div class="dot" id="dot" aria-hidden="true"></div>
+   </div>
+   <ol class="steps" id="steps" aria-live="polite"></ol>
+   <div class="simbar">
+    <button type="button" class="btn" id="play">시작</button>
+    <button type="button" class="btn ghost" id="next">한 칸씩 보기</button>
+    <span class="tip" id="tip">공이 멈춘 곳이 지금 일하는 친구예요</span>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="app">
+ <div class="wrap">
+  <h2><span class="num">3</span>앱 안에는 무엇이 있나요?</h2>
+  <p class="say">앱 아래쪽에는 버튼 다섯 개가 있어요. 왼쪽 폰 화면에서 눌러 보면, 그 칸이 무엇을 하는지 오른쪽에 나와요.</p>
+  <div class="appwrap">
+   <div class="phone" aria-label="앱 화면 그림">
+    <div class="screen">
+     <div class="scr-top"><span id="scrTitle">오늘</span><small>내 정보</small></div>
+     <div class="scr-body" id="scrBody"></div>
+     <div class="scr-nav" role="group" aria-label="앱 아래 버튼">
+      <button type="button" data-t="today" aria-pressed="true">오늘</button>
+      <button type="button" data-t="meet" aria-pressed="false">모임</button>
+      <button type="button" data-t="board" aria-pressed="false">게시판</button>
+      <button type="button" data-t="rec" aria-pressed="false">기록</button>
+      <button type="button" data-t="stat" aria-pressed="false">현황</button>
+     </div>
+    </div>
+   </div>
+   <div class="explain" id="explain" aria-live="polite"></div>
+  </div>
+
+  <h3 class="disp" style="font-size:24px;margin:34px 0 4px">모두에게 맡은 일이 있어요</h3>
+  <p class="say" style="margin-bottom:0">로그인하면 앱이 내가 누구인지 알아보고, 내가 할 일을 먼저 보여 줘요.</p>
+  <div class="roles">
+   <div class="role"><b>대표</b><span>모든 것을 보고, 서류를 마지막으로 확인해서 승인해요</span></div>
+   <div class="role"><b>총무</b><span>영수증을 올리고 돈 계산을 챙겨요</span></div>
+   <div class="role"><b>기록 담당</b><span>누가 왔는지 체크하고 모임 녹음을 올려요</span></div>
+   <div class="role"><b>사진 담당</b><span>모임 사진을 찍어서 올려요</span></div>
+   <div class="role"><b>정보 담당</b><span>모임 정보와 공지를 챙겨요</span></div>
+  </div>
+ </div>
+</section>
+
+<section id="fast" class="secret">
+ <div class="wrap">
+  <h2><span class="num">4</span>사진이 빨리 뜨는 세 가지 비법</h2>
+  <p class="say">처음에는 사진을 넘길 때 너무 느렸어요. 큰 사진을 매번 통째로 가져왔기 때문이에요. 그래서 이렇게 바꿨어요.</p>
+  <div class="grid g3">
+   <div class="card"><div class="big-n">1</div><h3>폰 크기로 줄여서 가져와요</h3><p>폰 화면은 작으니까, 요리사 로봇이 사진을 폰에 딱 맞는 크기로 줄여서 보내요. 짐이 가벼워지니 훨씬 빨라요.</p></div>
+   <div class="card"><div class="big-n">2</div><h3>다음 사진을 미리 챙겨요</h3><p>1번 사진을 보는 동안, 2번과 3번 사진을 몰래 먼저 가져와요. 넘기는 순간 이미 와 있어서 바로 보여요.</p></div>
+   <div class="card"><div class="big-n">3</div><h3>한 번 가져온 건 보관해요</h3><p>로봇이 줄인 사진을 6시간 동안 보관함에 넣어 둬요. 다른 친구가 같은 사진을 보면 다시 만들 필요가 없어요.</p></div>
+  </div>
+  <p class="say" style="margin-top:18px">크게 보기에서도 흐릿한 작은 사진을 먼저 보여 주고, 선명한 사진이 오면 바꿔 끼워요. 두 손가락으로 크게 키우면 그때 원래 사진을 가져와요.</p>
+ </div>
+</section>
+
+<section id="make">
+ <div class="wrap">
+  <h2><span class="num">5</span>이렇게 만들었어요</h2>
+  <p class="say">앱을 고칠 때마다 똑같은 다섯 단계를 지켜요. 레고를 만들고, 시험해 보고, 가게에 내놓는 것과 비슷해요.</p>
+  <ol class="build">
+   <li><span class="st">1단계</span><h3>레고 조각 만들기</h3><p>화면 모양, 버튼 움직임을 작은 파일로 나눠서 만들어요. 한 조각만 고치면 되니까 편해요.</p><span class="real">src/ 폴더 · 조각 순서표</span></li>
+   <li><span class="st">2단계</span><h3>조각 합치기</h3><p>조립기 프로그램이 순서표대로 조각을 이어 붙여서 화면 파일 하나로 만들어요.</p><span class="real">build_index.py</span></li>
+   <li><span class="st">3단계</span><h3>연습장에서 시험</h3><p>진짜 공책 대신 가짜 공책이 있는 연습용 화면을 띄우고, 시험 로봇이 대신 눌러 보며 고장 난 곳을 찾아요.</p><span class="real">모의 화면 · Playwright</span></li>
+   <li><span class="st">4단계</span><h3>가게에 내놓기</h3><p>버튼 한 번으로 요리사 로봇과 진열창에 새 버전을 올려요. 옛날 주소도 잘 열리는지 확인해요.</p><span class="real">deploy.py · clasp · Vercel</span></li>
+   <li><span class="st">5단계</span><h3>친구들이 써 보기</h3><p>진짜 폰에서 회원 두 명이 써 보고 어색한 곳을 알려 주면, 다시 1단계로 돌아가요.</p><span class="real">실제 폰 확인</span></li>
+  </ol>
+
+  <table class="tools">
+   <thead><tr><th>도구 이름</th><th>쉬운 별명</th><th>하는 일</th></tr></thead>
+   <tbody>
+    <tr><td>Google 시트</td><td class="nick">큰 공책</td><td>회원, 출석, 돈 쓴 기록을 표로 적어 둬요</td></tr>
+    <tr><td>Google 드라이브</td><td class="nick">사진 서랍</td><td>사진, 영수증, 녹음 파일을 보관해요</td></tr>
+    <tr><td>Google Apps Script</td><td class="nick">요리사 로봇</td><td>공책과 서랍을 열어 일을 처리하는 프로그램이에요</td></tr>
+    <tr><td>Vercel</td><td class="nick">진열창</td><td>앱 화면을 빠르게 보여 주는 인터넷 가게예요</td></tr>
+    <tr><td>clasp</td><td class="nick">택배 기사</td><td>내 컴퓨터에서 고친 코드를 요리사 로봇에게 배달해요</td></tr>
+    <tr><td>Python 조립기</td><td class="nick">레고 조립기</td><td>작은 조각 파일을 하나로 합치고, 위험한 기호가 없는지 검사해요</td></tr>
+    <tr><td>Playwright</td><td class="nick">시험 로봇</td><td>사람 대신 버튼을 누르고 사진을 찍어 확인해요</td></tr>
+    <tr><td>HTML · CSS · JavaScript</td><td class="nick">화면 재료</td><td>글자와 버튼(HTML), 색과 모양(CSS), 움직임(JavaScript)을 만들어요</td></tr>
+    <tr><td>Claude</td><td class="nick">도우미</td><td>대표님과 대화하면서 코드를 쓰고, 시험하고, 올려요</td></tr>
+   </tbody>
+  </table>
+
+  <h3 class="disp" style="font-size:24px;margin:34px 0 14px">최근에 고친 것들</h3>
+  <ol class="time">
+   <li><b>v45</b><span>오늘 화면 사진을 손가락으로 옆으로 넘길 수 있게 하고, 몇 번째 사진인지 점으로 보여 줘요</span></li>
+   <li><b>v46</b><span>사진 넘기기가 느리다는 말을 듣고, 폰 크기로 줄인 사진을 미리 가져오게 바꿨어요</span></li>
+   <li><b>v47</b><span>앨범 크게 보기도 흐릿한 사진을 먼저 보여 줘서 빨라졌어요</span></li>
+   <li><b>v48</b><span>할 일 옆에 '올리기' 버튼을 달고, 위쪽에 '내 정보' 메뉴를 만들고, 알림을 화면 아래로 옮겼어요</span></li>
+   <li><b>v49</b><span>지원금은 한 줄로 쉽게, 올리기 버튼은 접어서 깔끔하게, 오늘 화면에 모임 사진이 바로 보이게 했어요</span></li>
+  </ol>
+ </div>
+</section>
+
+<section id="promise" class="promise">
+ <div class="wrap">
+  <h2><span class="num">6</span>앱을 만들 때 꼭 지키는 약속</h2>
+  <p class="say">편한 것보다 더 중요한 게 있어요. 모두의 정보를 지키고, 틀린 걸 맞다고 보여 주지 않는 거예요.</p>
+  <div class="grid g2">
+   <div class="card"><h3>비밀번호는 아무 데도 적지 않아요</h3><p>동아리 비밀번호는 화면, 공지, 채팅 어디에도 쓰지 않아요. 열쇠는 주인만 가지고 있어요.</p></div>
+   <div class="card"><h3>회원 사진은 함부로 퍼뜨리지 않아요</h3><p>모임 사진은 우리끼리만 봐요. 바깥에 공개할 그림이 필요하면 사람이 없는 그림을 새로 만들어요.</p></div>
+   <div class="card"><h3>진짜 저장된 뒤에만 "됐어요"라고 해요</h3><p>버튼을 누르면 요리사 로봇이 공책에 다 적었다고 대답한 다음에야 체크 표시를 보여 줘요.</p></div>
+   <div class="card"><h3>로봇이 헷갈리는 기호는 쓰지 않아요</h3><p>요리사 로봇은 코드 속 특별한 기호 하나를 보면 거기서 코드를 잘라 버린 적이 있어요. 그래서 조립기가 매번 그 기호가 없는지 검사해요.</p></div>
+  </div>
+ </div>
+</section>
+
+<footer>
+ <div class="wrap">A.I.고 동아리 대시보드 · 2026년 11월 v49 기준 설명서 · 회원 이름과 비밀번호는 넣지 않았어요</div>
+</footer>
+
+<script>
+(function(){
+ var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+ var S = {
+  attend: [
+   ['phone','회원이 오늘 화면에서 "참석" 버튼을 눌러요. 버튼 안에서 작은 동그라미가 돌며 기다려요.'],
+   ['shop','진열창이 "이 사람이 간대요" 하는 쪽지를 요리사 로봇에게 보내요.'],
+   ['cook','요리사 로봇이 누가 보냈는지 이름을 확인해요.'],
+   ['note','큰 공책의 그 사람 칸에 "참석"이라고 적어요.'],
+   ['cook','로봇이 오는 사람 수로 쓸 수 있는 지원금을 다시 계산해요.'],
+   ['phone','"다 적었어요" 대답이 돌아오면 그때 체크 표시가 생기고, 지원금 숫자가 데굴데굴 굴러서 바뀌어요.']
+  ],
+  receipt: [
+   ['phone','총무가 "찍기 · 올리기"를 눌러 영수증 사진을 골라요.'],
+   ['shop','진열창이 사진을 한 장씩 보내면서 "올리는 중 → 완료"를 줄마다 보여 줘요.'],
+   ['cook','요리사 로봇이 사진을 받아 모임 날짜별로 이름을 붙여요.'],
+   ['box','사진 서랍의 그날 영수증 폴더에 넣어요.'],
+   ['note','큰 공책에 "영수증 1장, 얼마"를 적어요.'],
+   ['phone','오늘 화면의 "빠진 것" 목록에서 영수증 줄이 체크되며 사라지고, 대표는 서류 승인을 할 수 있어요.']
+  ],
+  swipe: [
+   ['phone','회원이 오늘 화면 사진을 손가락으로 옆으로 밀어요.'],
+   ['phone','미리 가져와 둔 사진이 있으면 기다리지 않고 바로 보여 줘요.'],
+   ['shop','없는 사진만 진열창이 요리사 로봇에게 부탁해요. "폰 크기로 주세요."'],
+   ['cook','요리사 로봇은 보관함에 줄여 둔 사진이 있으면 바로 꺼내요.'],
+   ['box','없으면 사진 서랍에서 폰 크기로 줄인 사진을 받아 6시간 동안 보관해요.'],
+   ['phone','사진이 도착하고, 그다음 사진들도 한꺼번에 미리 챙겨 둬요. 아래 점이 길쭉하게 움직여요.']
+  ]
+ };
+ var cur='attend', i=-1, timer=null;
+ var track=document.getElementById('track'), dot=document.getElementById('dot'), ol=document.getElementById('steps');
+ var nodes={}; track.querySelectorAll('.node').forEach(function(n){nodes[n.dataset.n]=n;});
+ function render(){
+  ol.innerHTML='';
+  S[cur].forEach(function(s,k){var li=document.createElement('li');li.textContent=s[1];if(k<i)li.className='done';if(k===i)li.className='on';ol.appendChild(li);});
+  Object.keys(nodes).forEach(function(k){nodes[k].classList.remove('on','done');});
+  S[cur].forEach(function(s,k){if(k<i)nodes[s[0]].classList.add('done');});
+  var at = i<0 ? 'phone' : S[cur][i][0];
+  if(i>=0) nodes[at].classList.add('on');
+  var tr=track.getBoundingClientRect(), ic=nodes[at].querySelector('.ico').getBoundingClientRect();
+  dot.style.left=(ic.left-tr.left+ic.width-12)+'px';
+  dot.style.top=(ic.top-tr.top-6)+'px';
+  dot.style.opacity = i<0 ? '.35':'1';
+ }
+ function stop(){clearTimeout(timer);timer=null;document.getElementById('play').textContent='시작';}
+ function step(){
+  if(i>=S[cur].length-1){stop();document.getElementById('tip').textContent='끝! 다른 일도 골라 보세요';return false;}
+  i++;render();return true;
+ }
+ function loop(){ if(step()) timer=setTimeout(loop, RM?900:1500); }
+ document.getElementById('play').onclick=function(){
+  if(timer){stop();return;}
+  if(i>=S[cur].length-1) i=-1;
+  this.textContent='멈춤';document.getElementById('tip').textContent='공이 멈춘 곳이 지금 일하는 친구예요';
+  render(); timer=setTimeout(loop,300);
+ };
+ document.getElementById('next').onclick=function(){ stop(); if(i>=S[cur].length-1) i=-1; step(); };
+ document.querySelectorAll('.tabs button').forEach(function(b){
+  b.onclick=function(){ stop(); document.querySelectorAll('.tabs button').forEach(function(x){x.setAttribute('aria-pressed', x===b?'true':'false');}); cur=b.dataset.s; i=-1; render(); };
+ });
+ window.addEventListener('resize', render);
+ render();
+
+ var T = {
+  today:{t:'오늘',blocks:[
+    ['big','다음 모임 · 11월 26일 (목) 저녁 7시','참석 / 불참 버튼','attend'],
+    ['','쓸 수 있는 지원금','아직 답 안 한 사람이 오면 더 늘어나요','money'],
+    ['','빠진 것 2개','영수증 올리기 ›  녹음 올리기 ›','todo'],
+    ['','모임 사진','최근 사진이 바로 보여요','photo'],
+    ['','찍기 · 올리기','종류 골라서 올리기','upload']],
+   info:{
+    attend:['다음 모임과 참석 버튼','가장 위에 다음 모임이 언제인지 크게 나와요. "참석"이나 "불참"을 누르면, 진짜로 공책에 적힌 다음에만 체크 표시가 생겨요.','모든 회원'],
+    money:['쓸 수 있는 지원금','오는 사람이 많을수록 쓸 수 있는 돈이 늘어나요. 회원에게는 한 줄로 쉽게 보여 주고, 궁금하면 "어떻게 계산해요?"를 누르면 계산식이 펼쳐져요.','모든 회원 · 대표와 총무는 계산식까지'],
+    todo:['빠진 것 목록','아직 안 올린 영수증, 사진, 녹음이 나와요. 줄 옆 "올리기"를 누르면 바로 올릴 수 있어요. 다 하면 체크가 그려지고 줄이 사라져요.','맡은 사람'],
+    photo:['모임 사진','최근 모임 사진이 자동으로 보여요. 옆으로 밀면 다음 사진, 누르면 크게 볼 수 있어요.','모든 회원'],
+    upload:['찍기 · 올리기','큰 버튼 하나로 사진이나 영수증을 올려요. 종류를 직접 고르고 싶으면 아래를 펼쳐서 사진·영수증·녹음·글쓰기 중에 골라요.','모든 회원']}},
+  meet:{t:'모임',blocks:[
+    ['big','11월 26일 모임','장소 · 시간 · 오는 사람','m1'],
+    ['','게스트 넣기','+ 넣기 를 누르면 이름 칸이 열려요','m2'],
+    ['','지난 모임','11월 12일 · 11월 5일','m3']],
+   info:{
+    m1:['모임 자세히 보기','모임마다 장소, 시간, 누가 오는지 볼 수 있어요.','모든 회원'],
+    m2:['게스트 넣기','친구를 데려오면 이름을 넣어요. 게스트도 지원금 계산에 들어가요. 한 모임에 두 명까지예요.','모든 회원'],
+    m3:['지난 모임','예전 모임에 누가 왔고 무엇을 했는지 다시 볼 수 있어요.','모든 회원']}},
+  board:{t:'게시판',blocks:[
+    ['big','글쓰기','공지나 나누고 싶은 이야기','b1'],
+    ['','공지 · 다음 주 준비물','정보 담당','b2'],
+    ['','이번 모임 후기','회원','b3']],
+   info:{
+    b1:['글쓰기','모두에게 알리고 싶은 말을 써요. 사진도 붙일 수 있어요.','모든 회원'],
+    b2:['공지','중요한 알림은 맨 위에 보여요.','정보 담당이 주로 써요'],
+    b3:['이야기 나누기','모임 후기나 궁금한 것을 자유롭게 나눠요.','모든 회원']}},
+  rec:{t:'기록',blocks:[
+    ['big','앨범','날짜별 모임 사진','r1'],
+    ['','주간 정리','회차별 요약과 인포그래픽','r2'],
+    ['','녹음 · 회의록','모임에서 한 이야기','r3']],
+   info:{
+    r1:['앨범','모임 날짜별로 사진이 모여 있어요. 누르면 크게 보고, 옆으로 넘기고, 두 손가락으로 키울 수 있어요.','모든 회원'],
+    r2:['주간 정리','한 주에 무엇을 했는지 요약과 그림 한 장(인포그래픽)으로 보여 줘요. 보고서를 쓸 때도 써요.','모든 회원'],
+    r3:['녹음과 회의록','기록 담당이 모임 녹음을 올리면, 나중에 무슨 이야기를 했는지 글로 정리할 수 있어요.','기록 담당']}},
+  stat:{t:'현황',blocks:[
+    ['big','이번 달 지원금','쓴 돈 · 남은 돈','s1'],
+    ['','서류 승인','활동보고서 · 영수증 확인','s2'],
+    ['','회원별 참석','누가 몇 번 왔는지','s3']],
+   info:{
+    s1:['이번 달 지원금','이번 달에 얼마를 썼고 얼마가 남았는지 막대로 보여 줘요.','대표 · 총무'],
+    s2:['서류 승인','한 달 서류를 대표가 확인하고 승인해요. 빠진 서류가 있으면 "먼저 채우기"를 권해요.','대표'],
+    s3:['회원별 참석','누가 모임에 몇 번 왔는지 한눈에 볼 수 있어요.','대표 · 총무']}}
+ };
+ var tab='today', body=document.getElementById('scrBody'), ex=document.getElementById('explain');
+ function show(key){
+  var d=T[tab].info[key];
+  body.querySelectorAll('.blk').forEach(function(b){b.setAttribute('aria-pressed', b.dataset.k===key?'true':'false');});
+  ex.innerHTML='';
+  var h=document.createElement('h3');h.textContent=d[0];
+  var p=document.createElement('p');p.textContent=d[1];
+  var w=document.createElement('span');w.className='who';w.textContent='누가 써요: '+d[2];
+  var hint=document.createElement('p');hint.style.cssText='margin-top:14px;font-size:14px;color:#87918E';hint.textContent='폰 화면의 다른 칸이나 아래 버튼도 눌러 보세요';
+  ex.appendChild(h);ex.appendChild(p);ex.appendChild(w);ex.appendChild(hint);
+ }
+ function openTab(t){
+  tab=t; document.getElementById('scrTitle').textContent=T[t].t;
+  document.querySelectorAll('.scr-nav button').forEach(function(b){b.setAttribute('aria-pressed', b.dataset.t===t?'true':'false');});
+  body.innerHTML='';
+  T[t].blocks.forEach(function(x){
+   var b=document.createElement('button');b.type='button';b.className='blk'+(x[0]?' '+x[0]:'');b.dataset.k=x[3];
+   var bb=document.createElement('b');bb.textContent=x[1];var sp=document.createElement('span');sp.textContent=x[2];
+   b.appendChild(bb);b.appendChild(sp);b.onclick=function(){show(x[3]);};body.appendChild(b);
+  });
+  show(T[t].blocks[0][3]);
+ }
+ document.querySelectorAll('.scr-nav button').forEach(function(b){b.onclick=function(){openTab(b.dataset.t);};});
+ openTab('today');
+})();
+</script>
+</body>
+</html>

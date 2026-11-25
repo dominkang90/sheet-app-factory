@@ -1,0 +1,7 @@
+node_modules/
+.vercel/
+.env*
+.clasp.json
+__pycache__/
+*.pyc
+mock/
